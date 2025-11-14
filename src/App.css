@@ -40,3 +40,197 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Nuevos estilos para el cruce */
+.scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  font-family: sans-serif;
+}
+
+.intersection {
+  position: relative;
+  width: 640px;
+  height: 640px;
+  background: #6fb36f; /* césped */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* vías principales */
+.road.horizontal {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 140px;
+  transform: translateY(-50%);
+  background: #2e2e2e;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.road.vertical {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 140px;
+  transform: translateX(-50%);
+  background: #2e2e2e;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* carriles (para visual) */
+.lane {
+  width: 48%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: visible;
+}
+.lane-left { justify-content: flex-start; }
+.lane-right { justify-content: flex-end; }
+.lane-top { flex-direction: column; justify-content: flex-start; }
+.lane-bottom { flex-direction: column; justify-content: flex-end; }
+
+/* marcas de carril */
+.road::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: rgba(255,255,255,0.6);
+  background-image: linear-gradient(90deg, rgba(255,255,255,0.9) 30%, rgba(255,255,255,0.2) 30%);
+  background-size: 20px 2px;
+  transform: translateY(-50%);
+}
+.road.vertical::before {
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.9) 30%, rgba(255,255,255,0.2) 30%);
+  background-size: 2px 20px;
+  transform: translateX(-50%);
+}
+
+/* autos */
+.car {
+  width: 36px;
+  height: 20px;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 6;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  opacity: 0.95;
+}
+
+/* colores de autos */
+.car-left { background: #ff6b6b; }
+.car-right { background: #4d9fef; }
+.car-up { background: #ffd166; }
+.car-down { background: #6ee7b7; }
+
+/* posiciones iniciales para animaciones (fuera del área visible) */
+.car-right { left: -60px; top: 50%; transform: translateY(-50%); }
+.car-left { right: -60px; top: 50%; transform: translateY(-50%); }
+.car-up { left: 50%; top: -40px; transform: translateX(-50%); }
+.car-down { left: 50%; bottom: -40px; transform: translateX(-50%); }
+
+/* animaciones de movimiento */
+@keyframes move-right {
+  from { left: -60px; }
+  to { left: 100%; }
+}
+@keyframes move-left {
+  from { right: -60px; }
+  to { right: 100%; }
+}
+@keyframes move-down {
+  from { top: -40px; }
+  to { top: 100%; }
+}
+@keyframes move-up {
+  from { bottom: -40px; }
+  to { bottom: 100%; }
+}
+
+/* clase 'go' hace que los autos verticales se muevan cuando tienen luz verde */
+.car-right { animation: move-right 6s linear infinite; }
+.car-left { animation: move-left 6s linear infinite; }
+
+/* verticales solo se mueven cuando 'go' está presente */
+.car-up { animation: none; }
+.car-up.go { animation: move-down 6s linear infinite; } /* nota: car-up animado hacia abajo para atravesar */
+.car-down { animation: none; }
+.car-down.go { animation: move-up 6s linear infinite; }
+
+/* delays para separar autos */
+.delay-1 { animation-delay: 0.3s; }
+.delay-2 { animation-delay: 2s; }
+.delay-3 { animation-delay: 3.5s; }
+.delay-4 { animation-delay: 5s; }
+
+/* semáforos */
+.traffic-light {
+  width: 36px;
+  height: 86px;
+  background: #222;
+  border-radius: 6px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+.bulb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(80,80,80,0.3);
+  box-shadow: inset 0 -2px 6px rgba(0,0,0,0.6);
+}
+.bulb.red { background: #4f0000; }
+.bulb.yellow { background: #4f3f00; }
+.bulb.green { background: #003300; }
+.bulb.green.on { background: #2ecc40; box-shadow: 0 0 10px rgba(46,204,64,0.6); }
+
+/* Añadidos: estilos para rojo y amarillo cuando están 'on' */
+.bulb.red.on {
+  background: #ff3b3b;
+  box-shadow: 0 0 10px rgba(255,59,59,0.6);
+}
+.bulb.yellow.on {
+  background: #ffdd57;
+  box-shadow: 0 0 8px rgba(255,221,87,0.5);
+}
+
+.lights { position: absolute; z-index: 8; }
+.lights.top-left { left: 20px; top: 20px; transform: rotate(0deg); }
+.lights.top-right { right: 20px; top: 20px; transform: rotate(90deg); }
+.lights.bottom-left { left: 20px; bottom: 20px; transform: rotate(-90deg); }
+.lights.bottom-right { right: 20px; bottom: 20px; transform: rotate(180deg); }
+
+.legend {
+  text-align: center;
+}
+.legend button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #fff;
+  cursor: pointer;
+}

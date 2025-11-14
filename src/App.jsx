@@ -1,35 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [lights, setLights] = useState({
+    topLeft: "red",
+    topRight: "red",
+    bottomLeft: "red",
+    bottomRight: "red",
+  });
+
+  // Cambia el color de un semáforo: position = 'topLeft'|'topRight'|'bottomLeft'|'bottomRight'
+  // color = 'red'|'yellow'|'green'
+  function setLight(position, color) {
+    if (!["topLeft", "topRight", "bottomLeft", "bottomRight"].includes(position)) return;
+    if (!["red", "yellow", "green"].includes(color)) return;
+    setLights((prev) => ({ ...prev, [position]: color }));
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="scene">
+      <div className="intersection">
+        <div className="road horizontal">
+          <div className="lane lane-left" />
+          <div className="lane lane-right" />
+        </div>
+
+        <div className="road vertical">
+          <div className="lane lane-top" />
+          <div className="lane lane-bottom" />
+        </div>
+
+        <div className="lights top-left">
+          <div className="traffic-light">
+            <div className={"bulb red " + (lights.topLeft === "red" ? "on" : "")} />
+            <div className={"bulb yellow " + (lights.topLeft === "yellow" ? "on" : "")} />
+            <div className={"bulb green " + (lights.topLeft === "green" ? "on" : "")} />
+          </div>
+        </div>
+
+        <div className="lights top-right">
+          <div className="traffic-light">
+            <div className={"bulb red " + (lights.topRight === "red" ? "on" : "")} />
+            <div className={"bulb yellow " + (lights.topRight === "yellow" ? "on" : "")} />
+            <div className={"bulb green " + (lights.topRight === "green" ? "on" : "")} />
+          </div>
+        </div>
+
+        <div className="lights bottom-left">
+          <div className="traffic-light">
+            <div className={"bulb red " + (lights.bottomLeft === "red" ? "on" : "")} />
+            <div className={"bulb yellow " + (lights.bottomLeft === "yellow" ? "on" : "")} />
+            <div className={"bulb green " + (lights.bottomLeft === "green" ? "on" : "")} />
+          </div>
+        </div>
+
+        <div className="lights bottom-right">
+          <div className="traffic-light">
+            <div className={"bulb red " + (lights.bottomRight === "red" ? "on" : "")} />
+            <div className={"bulb yellow " + (lights.bottomRight === "yellow" ? "on" : "")} />
+            <div className={"bulb green " + (lights.bottomRight === "green" ? "on" : "")} />
+          </div>
+        </div>
+
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
