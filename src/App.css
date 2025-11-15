@@ -65,7 +65,7 @@
   left: 0;
   right: 0;
   top: 50%;
-  height: 140px;
+  height: 200px;
   transform: translateY(-50%);
   background: #2e2e2e;
   z-index: 2;
@@ -79,7 +79,7 @@
   top: 0;
   bottom: 0;
   left: 50%;
-  width: 140px;
+  width: 200px;
   transform: translateX(-50%);
   background: #2e2e2e;
   z-index: 2;
@@ -219,10 +219,26 @@
 }
 
 .lights { position: absolute; z-index: 8; }
-.lights.top-left { left: 20px; top: 20px; transform: rotate(0deg); }
-.lights.top-right { right: 20px; top: 20px; transform: rotate(90deg); }
-.lights.bottom-left { left: 20px; bottom: 20px; transform: rotate(-90deg); }
-.lights.bottom-right { right: 20px; bottom: 20px; transform: rotate(180deg); }
+.lights.top-left { 
+  left: 50%; 
+  top: calc(50% - 200px);
+  transform: translateX(-110px) rotate(0deg);
+}
+.lights.top-right { 
+  right: calc(50% - 200px);
+  top: 50%;
+  transform: translateY(-110px) rotate(90deg);
+}
+.lights.bottom-left { 
+  left: calc(50% - 200px);
+  bottom: 50%;
+  transform: translateY(110px) rotate(-90deg);
+}
+.lights.bottom-right { 
+  right: 50%;
+  bottom: calc(50% - 200px);
+  transform: translateX(110px) rotate(180deg);
+}
 
 .legend {
   text-align: center;
